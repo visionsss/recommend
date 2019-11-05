@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}专业推荐{% endblock %}
+{% block content %}
+    <script>
+        function getProfessionDetail(x)
+        {
+            var y = {{ pro_js|safe }};
+            var message = '<h1>'+x+'</h1></br>' +
+                '<table class="table table-bordered table-hover table-striped" width="600px">';
+            var count = 0;
+            const col = 3;
+            for (var i = 0; i < y.length; i++) {
+                if(y[i]['fields']['type1'] === x){
+                    {#console.log(count, count%2)#}
+                    if(count%col === 0){
+                        message = message + '<tr height="30px">';
+                        message = message + '<td><a target="_blank" href="https://baike.baidu.com/item/'+y[i]['fields']['profession_name']+'专业">'
+                    +y[i]['fields']['profession_name'] + '</a></td>';
+                    }
+                    else {
+                        message = message + '<td><a target="_blank" href="https://baike.baidu.com/item/'+y[i]['fields']['profession_name']+'专业">'
+                    +y[i]['fields']['profession_name'] + '</a></td>';
+                    }
+                    if(count%col === col-1){
+                        message = message+'</tr>';
+                    }
+                    count++;
+                    {#console.log(y[i]['fields']['type1']);#}
+                }
+            }
+
+            let div = document.getElementById('profession_message');
+            div.innerHTML = message;
+
+
+        }
+    </script>
+    {% if request.session.is_login %}
+    <div class="container-fluid row">
+        {# 左侧导航栏专业大类 #}
+        <div class="container-fluid col-sm-2">
+            <div class="span3">
+                <ul class="nav nav-list well">
+                    <li class="nav-header">
+                        专业类别
+                    </li>
+                    {% for foo in type1 %}
+                        <li class="active">
+                            <button id="{{ foo }}" class="btn btn-info" style="width: 170px; font-size: large; padding-top: 4px; padding-bottom: 4px; margin-top: 5px" onclick="getProfessionDetail('{{ foo }}')">{{ foo }}</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+	    <div class="container-fluid col-sm-7">
+            <div id="profession_message">
+                <script>
+                    getProfessionDetail('工学')
+                </script>
+            </div>
+        </div>
+        <div class="container-fluid col-sm-3">
+            <h3>{{request.session.user_mbti}} 推荐的专业</h3>
+        </div>
+    </div>
+
+        <div class="well" style="height: 100px"></div>
+
+
+    {% else %}
+    <h1>你尚未登录，无法推荐专业！</h1>
+    {% endif %}
+{% endblock %}

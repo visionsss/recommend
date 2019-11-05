@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}普通院校信息查询{% endblock %}
+{% block content %}
+    {% if request.session.is_login %}
+    <h3>普通院校信息查询</h3>
+<div class="col-sm-offset-1" style="width: 80%">
+<table class="table table-bordered table-hover table-striped">
+    <tr><th>院校名称</th><th>院校排名</th><th>所在地区</th><th>院校特色</th><th>院校隶属</th><th>院校举办</th><th>办学类型</th></tr>
+    {% for school in school_list %}
+    <tr>
+        <td>{{ school.name }}</td>
+        <td>{{ school.rank }}</td>
+        <td>{{ school.city }}</td>
+        <td>{{ school.special }}</td>
+        <td>{{ school.belong }}</td>
+        <td>{{ school.type1 }}</td>
+        <td>{{ school.type2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{#翻页按钮#}
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {#  第一页  #}
+  <li><a href="?page=1" aria-label="Previous"><span aria-hidden="true">第一页</span></a></li>
+{#    上一页    #}
+      {% if school_list.has_previous %}
+        <li><a href="?page={{ school_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+    {% else %}
+            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+    {% endif %}
+{#  disabled是当你的按钮不满足的时候不可以点击了#}
+    {% for i in pageRange %}
+         {% if current_num == i %}
+          <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+
+         {% else %}
+          <li><a href="?page={{ i }}">{{ i }}</a></li>
+         {% endif %}
+    {% endfor %}
+
+    {% if school_list.has_next %}
+        <li><a href="?page={{ school_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+    {% else %}
+            <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+    {% endif %}
+
+  <li>
+      <a href="?page={{ last }}" aria-label="Next">
+        <span aria-hidden="true">最后一页</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+</div>
+    {% else %}
+    <h1>你尚未登录，无法查询普通院校信息</h1>
+    {% endif %}
+{% endblock %}

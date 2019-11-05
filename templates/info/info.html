@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}个人信息{% endblock %}
+{% block content %}
+    {% if request.session.is_login %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+          <form class='form-info' action="/info/" method="post">
+          {% csrf_token %}
+              {% if message %}
+                  <div class="alert alert-warning">{{ message }}</div>
+              {% endif %}
+              <h2 class="text-center">信息填写</h2>
+              <div class="form-group">
+                  {{ info_form.username.label_tag }}
+                  {{ info_form.username }}
+              </div>
+              <div class="form-group">
+                  {{ info_form.password.label_tag }}
+                  {{ info_form.password }}
+              </div>
+              <div class="form-group">
+                  {{ info_form.sex.label_tag }}
+                  {{ info_form.sex }}
+              </div>
+              <div class="form-group">
+                  {{ info_form.province.label_tag }}
+                  {{ info_form.province }}
+              </div>
+              <div class="form-group">
+                  {{ info_form.subject.label_tag }}
+                  {{ info_form.subject }}
+              </div>
+              <div class="form-group">
+                  {{ info_form.score.label_tag }}
+                  {{ info_form.score }}
+
+              </div>
+              <button type="submit" class="btn btn-primary pull-right">提交</button>
+
+          </form>
+        </div>
+
+    </div> <!-- /container -->
+    {% else %}
+    <h1>你尚未<a href="/login/">登录</a>，无法填写个人信息！</h1>
+
+    {% endif %}
+{% endblock %}

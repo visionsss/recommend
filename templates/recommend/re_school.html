@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}学校推荐{% endblock %}
+{% block content %}
+    {% if request.session.is_login %}
+    <h1>你好,{{ request.session.user_name }}！学校推荐</h1>
+    {% else %}
+    <h1>你尚未登录，无法推荐学校！</h1>
+    {% endif %}
+{% endblock %}
