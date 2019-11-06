@@ -1,10 +1,18 @@
 from django.shortcuts import render
 from . import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from . import form
+school_name = ''
+city = ''
 
 
 def school(request):
-    school_list = models.school_info.objects.all()
+    global school_name, city
+    if request.method == 'POST':
+        school_name = request.POST.get('school_name')
+        city = request.POST.get('city')
+        school_list = models.school_info.objects.filter(name__contains=school_name, city__contains=city)
+    school_list = models.school_info.objects.filter(name__contains=school_name, city__contains=city)
     paginator = Paginator(school_list, 10)  # 设置每一页显示几条  创建一个panginator对象
     last = paginator.num_pages
     try:
@@ -25,6 +33,7 @@ def school(request):
             pageRange = range(current_num - 5, current_num + 6)  # range求的是按钮数   如果你的按钮数小于分页数 那么就按照正常的分页数目来显示
 
     else:
-        pageRange = paginator.page_range()  # 正常分配
+        pageRange = range(1, last)  # 正常分配
 
+    school_form = form.school_form(initial={'school_name': school_name, 'city': city})
     return render(request, 'school/school.html', locals())

@@ -4,6 +4,21 @@
     {% if request.session.is_login %}
     <h3>普通院校信息查询</h3>
 <div class="col-sm-offset-1" style="width: 80%">
+<div id="select_school">
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {% for foo in school_form %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">{{ foo.label }}</label>
+                {{ foo }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary pull-left">提交</button>
+    </form>
+
+
+
+</div>
 <table class="table table-bordered table-hover table-striped">
     <tr><th>院校名称</th><th>院校排名</th><th>所在地区</th><th>院校特色</th><th>院校隶属</th><th>院校举办</th><th>办学类型</th></tr>
     {% for school in school_list %}
