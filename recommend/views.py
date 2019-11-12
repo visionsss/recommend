@@ -9,7 +9,7 @@ def re_school(request):
     try:
         score = User.objects.filter(username=request.session['user_name'])[0].score
         print(score)
-        school = models.re_school.objects.filter(score_avg__range=(score - 30, score + 30))
+        school = models.re_school.objects.filter(score_low__range=(score - 30, score + 30))
         print(school)
     except:
         pass
